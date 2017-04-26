@@ -1,0 +1,11 @@
+require: rubocop-rspec
+
+AllCops:
+  Exclude:
+    - bin/*
+
+Style/Documentation:
+  Enabled: false
+
+Style/NumericLiterals:
+  Enabled: false
