@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Dir[File.expand_path('db/migrate/**/*.rb', __dir__)].each { |file| require file }
 
 CreateSchoolsTable.new.change

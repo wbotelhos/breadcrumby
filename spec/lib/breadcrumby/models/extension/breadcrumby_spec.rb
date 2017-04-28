@@ -75,7 +75,7 @@ RSpec.describe Breadcrumby::Extension, '.breadcrumby' do
         before do
           # TODO: was need to declare again, site the other Course.class_eval keeped the callback on memory. Why if it is inside a before block?
           Course.class_eval { breadcrumby }
-          Grade.class_eval { breadcrumby path: [:course, :level] }
+          Grade.class_eval { breadcrumby path: %i[course level] }
         end
 
         it 'returns itself and the parents until the last parent path' do
@@ -86,7 +86,7 @@ RSpec.describe Breadcrumby::Extension, '.breadcrumby' do
       context 'and last parent has path' do
         before do
           Course.class_eval { breadcrumby path: :school }
-          Grade.class_eval { breadcrumby path: [:course, :level] }
+          Grade.class_eval { breadcrumby path: %i[course level] }
         end
 
         it 'returns itself and the following parents' do

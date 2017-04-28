@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'breadcrumby/helpers/view_helper'
 
 module Breadcrumby

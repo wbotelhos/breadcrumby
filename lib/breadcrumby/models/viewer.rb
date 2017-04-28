@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Breadcrumby
   class Viewer
     def initialize(object, options = {}, view = ActionController::Base.helpers)
@@ -32,8 +34,20 @@ module Breadcrumby
 
     def i18n_name(object)
       I18n.t(:name,
-        scope:   scope(object),
-        default: object.send(object.breadcrumby_options[:method_name]) || '--')
+             scope:   scope(object),
+             default: object.send(object.breadcrumby_options[:method_name]) || '--')
+    end
+
+    def item(content, options = item_options)
+      @view.content_tag :li, content, options
+    end
+
+    def item_options
+      {
+        itemprop:  :itemListElement,
+        itemscope: true,
+        itemtype:  'http://schema.org/ListItem'
+      }
     end
 
     def link(object, action: nil)
@@ -46,18 +60,6 @@ module Breadcrumby
 
     def link_action(object, action)
       action ? 'javascript:void(0);' : object.show_path
-    end
-
-    def link_tag_name(object, action)
-      name = action ? i18n_action_name(object, action) : i18n_name(object)
-
-      @view.content_tag :span, name, link_tag_name_options
-    end
-
-    private
-
-    def link_tag_name_options
-      { itemprop: :name }
     end
 
     def link_options(object, action)
@@ -73,6 +75,16 @@ module Breadcrumby
       }
     end
 
+    def link_tag_name(object, action)
+      name = action ? i18n_action_name(object, action) : i18n_name(object)
+
+      @view.content_tag :span, name, link_tag_name_options
+    end
+
+    def link_tag_name_options
+      { itemprop: :name }
+    end
+
     def list_options
       {
         class:     :breadcrumby,
@@ -83,18 +95,6 @@ module Breadcrumby
 
     def meta(index)
       @view.tag :meta, content: index, itemprop: :position
-    end
-
-    def item(content, options = item_options)
-      @view.content_tag :li, content, options
-    end
-
-    def item_options
-      {
-        itemprop:  :itemListElement,
-        itemscope: true,
-        itemtype:  'http://schema.org/ListItem'
-      }
     end
 
     def scope(object)

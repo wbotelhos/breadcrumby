@@ -12,7 +12,7 @@ RSpec.describe Breadcrumby::Extension, '.breadcrumby_options' do
         Dummy.class_eval { breadcrumby }
       end
 
-      it "uses a default" do
+      it 'uses a default' do
         expect(Dummy.new.breadcrumby_options[:i18n_key]).to eq 'dummy'
       end
     end
@@ -25,7 +25,7 @@ RSpec.describe Breadcrumby::Extension, '.breadcrumby_options' do
         Dummy.class_eval { breadcrumby i18n_key: :key }
       end
 
-      it "uses the given one" do
+      it 'uses the given one' do
         expect(Dummy.new.breadcrumby_options[:i18n_key]).to eq :key
       end
     end
@@ -40,7 +40,7 @@ RSpec.describe Breadcrumby::Extension, '.breadcrumby_options' do
         Dummy.class_eval { breadcrumby }
       end
 
-      it "uses a default" do
+      it 'uses a default' do
         expect(Dummy.new.breadcrumby_options[:method_name]).to eq :name
       end
     end
@@ -53,7 +53,7 @@ RSpec.describe Breadcrumby::Extension, '.breadcrumby_options' do
         Dummy.class_eval { breadcrumby method_name: :some_name }
       end
 
-      it "uses the given one" do
+      it 'uses the given one' do
         expect(Dummy.new.breadcrumby_options[:method_name]).to eq :some_name
       end
     end

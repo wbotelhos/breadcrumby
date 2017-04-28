@@ -18,7 +18,7 @@ RSpec.describe Breadcrumby::Viewer, '.i18n_action_name' do
     ) { 'translation' }
   end
 
-  it 'returns the translation for the name of given action key' do
+  it 'returns a name for object fetched from i18n' do
     expect(subject.i18n_action_name(object, action)).to eq 'translation'
   end
 end

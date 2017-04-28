@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Breadcrumby
   class Home
     include Breadcrumby::Extension

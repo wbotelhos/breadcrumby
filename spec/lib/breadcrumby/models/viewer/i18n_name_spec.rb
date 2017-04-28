@@ -13,7 +13,7 @@ RSpec.describe Breadcrumby::Viewer, '.i18n_name' do
     before do
       allow(object).to receive(:breadcrumby_options) do
         {
-          i18n_key:    :i18n_key ,
+          i18n_key:    :i18n_key,
           method_name: :custom_method_name
         }
       end
@@ -25,7 +25,7 @@ RSpec.describe Breadcrumby::Viewer, '.i18n_name' do
       ) { 'translation' }
     end
 
-    it 'returns the objects including the home' do
+    it 'uses the returned value as the object name' do
       expect(subject.i18n_name(object)).to eq 'translation'
     end
   end
@@ -34,7 +34,7 @@ RSpec.describe Breadcrumby::Viewer, '.i18n_name' do
     before do
       allow(object).to receive(:breadcrumby_options) do
         {
-          i18n_key:    :i18n_key ,
+          i18n_key:    :i18n_key,
           method_name: :custom_method_name_nil
         }
       end
@@ -46,7 +46,7 @@ RSpec.describe Breadcrumby::Viewer, '.i18n_name' do
       ) { 'translation' }
     end
 
-    it 'returns the translation for the name of given object' do
+    it 'uses a default name as fallback' do
       expect(subject.i18n_name(object)).to eq 'translation'
     end
   end

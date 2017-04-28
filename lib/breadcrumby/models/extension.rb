@@ -37,7 +37,7 @@ module Breadcrumby
         models.each.with_index do |model, index|
           if model.is_a? Array
             object  = send(model.last)
-            index    = 0
+            index   = 0
             objects = extract(model, index, object, objects)
 
             unless last_item?(model, index)
@@ -59,10 +59,10 @@ module Breadcrumby
 
     module ClassMethods
       def breadcrumby(options = {})
-        @options = options.reverse_merge({
-          i18n_key:    self.name.underscore,
+        @options = options.reverse_merge(
+          i18n_key:    name.underscore,
           method_name: :name
-        })
+        )
       end
 
       def breadcrumby_options
