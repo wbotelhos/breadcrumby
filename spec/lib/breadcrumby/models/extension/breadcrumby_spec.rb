@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe '.breadcrumby' do
+RSpec.describe Breadcrumby::Extension, '.breadcrumby' do
   context 'when object has no path option' do
     let!(:school) { create :school, name: 'School 1' }
 

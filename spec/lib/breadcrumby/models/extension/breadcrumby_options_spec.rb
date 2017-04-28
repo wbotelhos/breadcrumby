@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe '.breadcrumby_options' do
+RSpec.describe Breadcrumby::Extension, '.breadcrumby_options' do
   describe ':i18n_key' do
     context 'when is not given' do
       before do
