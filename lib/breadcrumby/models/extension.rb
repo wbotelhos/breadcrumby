@@ -21,32 +21,39 @@ module Breadcrumby
 
       private
 
+      def extract(models, index, object, objects)
+        if last_item?(models, index)
+          objects += object.breadcrumby
+        else
+          objects << object
+        end
+
+        objects
+      end
+
       def extracting(object, models, objects)
-        if models.present?
-          models.each.with_index do |model, index|
-            if model.is_a? Array
-              object = send(model.last)
+        return objects if models.blank?
 
-              if model.size == 1
-                objects += object.breadcrumby
-              else
-                objects << object
+        models.each.with_index do |model, index|
+          if model.is_a? Array
+            object  = send(model.last)
+            index    = 0
+            objects = extract(model, index, object, objects)
 
-                extracting object, model.reverse.drop(1), objects
-              end
-            elsif !model.nil?
-              object = object.send(model)
-
-              if models.size - 1 == index
-                objects += object.breadcrumby
-              else
-                objects << object
-              end
+            unless last_item?(model, index)
+              extracting object, model.reverse.drop(1), objects
             end
+          elsif !model.nil?
+            object  = object.send(model)
+            objects = extract(models, index, object, objects)
           end
         end
 
         objects
+      end
+
+      def last_item?(collection, index)
+        collection.size - 1 == index
       end
     end
 
