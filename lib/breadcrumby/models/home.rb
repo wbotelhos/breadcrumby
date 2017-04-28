@@ -13,7 +13,9 @@ module Breadcrumby
     end
 
     def show_path
-      @view.root_path
+      return @view.root_path if @view.respond_to?(:root_path)
+
+      '/'
     end
   end
 end
