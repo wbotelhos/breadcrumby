@@ -4,8 +4,16 @@ AllCops:
   Exclude:
     - bin/*
 
-Style/Documentation:
+Rails:
+  Enabled: true
+
+Lint/Debugger:
   Enabled: false
 
-Style/NumericLiterals:
-  Enabled: false
+Style/PercentLiteralDelimiters:
+  PreferredDelimiters:
+    '%i': '[]'
+    '%I': '[]'
+    '%r': ()
+    '%w': '[]'
+    '%W': '[]'
