@@ -9,20 +9,18 @@ module Breadcrumby
     def breadcrumb
       return '' unless @object.respond_to?(:breadcrumby)
 
-      nodes = breadcrumbs.map.with_index do |object, index|
-        node link(object) + meta(index + 1)
+      list = breadcrumbs.map.with_index do |object, index|
+        item link(object) + meta(index + 1)
       end
 
       if (action = @options[:action]).present?
-        nodes.unshift node(link(@object, action: action) + meta(nodes.size + 1))
+        list.unshift item(link(@object, action: action) + meta(list.size + 1))
       end
 
-      nodes = nodes.reverse.join('').html_safe
+      list = list.reverse.join('').html_safe
 
-      @view.content_tag :ol, nodes, list_options
+      @view.content_tag :ol, list, list_options
     end
-
-    private
 
     def breadcrumbs
       @breadcrumbs ||= @object.breadcrumby.append(Breadcrumby::Home.new(@view))
@@ -38,30 +36,28 @@ module Breadcrumby
         default: object.send(object.breadcrumby_options[:method_name]) || '--')
     end
 
-    def item_options
-      {
-        itemprop:  :itemListElement,
-        itemscope: true,
-        itemtype:  'http://schema.org/ListItem'
-      }
-    end
-
     def link(object, action: nil)
       @view.link_to(
-        action ? i18n_action_name(object, action) : link_tag_name(object, action),
-        action ? nil : object.show_path,
+        link_tag_name(object, action),
+        link_action(object, action),
         link_options(object, action)
       )
     end
 
-    def link_tag_name(object, action)
-      @view.content_tag :span, i18n_name(object), link_tag_name_options
+    def link_action(object, action)
+      action ? 'javascript:void(0);' : object.show_path
     end
 
+    def link_tag_name(object, action)
+      name = action ? i18n_action_name(object, action) : i18n_name(object)
+
+      @view.content_tag :span, name, link_tag_name_options
+    end
+
+    private
+
     def link_tag_name_options
-      {
-        itemprop: :name
-      }
+      { itemprop: :name }
     end
 
     def link_options(object, action)
@@ -89,8 +85,16 @@ module Breadcrumby
       @view.tag :meta, content: index, itemprop: :position
     end
 
-    def node(content, options = item_options)
+    def item(content, options = item_options)
       @view.content_tag :li, content, options
+    end
+
+    def item_options
+      {
+        itemprop:  :itemListElement,
+        itemscope: true,
+        itemtype:  'http://schema.org/ListItem'
+      }
     end
 
     def scope(object)
