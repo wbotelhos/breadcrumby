@@ -22,7 +22,7 @@ RSpec.describe Breadcrumby::Viewer, '.i18n_action_name' do
     ) { 'translation' }
   end
 
-  it 'returns a name for object fetched from i18n' do
+  it 'returns a name for object fetched from i18n with root fallback' do
     expect(subject.i18n_action_name(object, action)).to eq 'translation'
   end
 end
