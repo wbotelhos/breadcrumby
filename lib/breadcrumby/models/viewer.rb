@@ -29,7 +29,13 @@ module Breadcrumby
     end
 
     def i18n_action_name(object, action)
-      I18n.t "actions.#{action}.name", scope: scope(object), default: I18n.t(action, default: 'Edition')
+      label = "actions.#{action}.name"
+
+      I18n.t(label, scope: scope(object), default:
+        I18n.t(label, scope: scope(object, include_model: false), default:
+          I18n.t(action, default: 'Edition')
+        )
+      )
     end
 
     def i18n_name(object)
@@ -97,8 +103,13 @@ module Breadcrumby
       @view.tag :meta, content: index, itemprop: :position
     end
 
-    def scope(object)
-      [:breadcrumby, object.breadcrumby_options[:i18n_key]]
+    def scope(object, include_model: true)
+      result = [:breadcrumby]
+
+      result << object.breadcrumby_options[:i18n_key] if include_model
+
+      result
+    end
     end
   end
 end

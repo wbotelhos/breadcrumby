@@ -14,7 +14,11 @@ RSpec.describe Breadcrumby::Viewer, '.i18n_action_name' do
     allow(I18n).to receive(:t).with(:edit, default: 'Edition') { 'edit || Edition' }
 
     allow(I18n).to receive(:t).with(
-      'actions.edit.name', scope: [:breadcrumby, 'school'], default: 'edit || Edition'
+      'actions.edit.name', scope: [:breadcrumby], default: 'edit || Edition'
+    ) { 'root || edit || Edition' }
+
+    allow(I18n).to receive(:t).with(
+      'actions.edit.name', scope: [:breadcrumby, 'school'], default: 'root || edit || Edition'
     ) { 'translation' }
   end
 
