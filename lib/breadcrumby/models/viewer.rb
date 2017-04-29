@@ -13,12 +13,12 @@ module Breadcrumby
 
       action = @options[:action]
 
-      list = breadcrumbs.map.with_index do |object, index|
+      list = breadcrumbs(current_object).map.with_index do |object, index|
         item link(object) + meta(index + 1)
       end
 
       if action.present?
-        list.unshift item(link(@object, action: action) + meta(list.size + 1))
+        list.unshift item(link(current_object, action: action) + meta(list.size + 1))
       end
 
       list = list.reverse.join('').html_safe
@@ -26,12 +26,24 @@ module Breadcrumby
       @view.content_tag :ol, list, list_options
     end
 
-    def breadcrumbs(crumbs: [])
-      items = @object.breadcrumby
+    def breadcrumbs(object, crumbs: [])
+      items = object.breadcrumby
 
       items += [crumbs].flatten if crumbs.present?
 
       @breadcrumbs ||= items.append(Breadcrumby::Home.new(@view))
+    end
+
+    def current_object
+      @current_object ||= begin
+        return @object if object_action.blank?
+
+        if object_action.respond_to?(:call)
+          object_action.call @view
+        else
+          object_action
+        end
+      end
     end
 
     def i18n_action_name(object, action)
@@ -116,6 +128,15 @@ module Breadcrumby
 
       result
     end
+
+    private
+
+    def object_action
+      @object_action ||= object_options[:actions][@options[:action]]
+    end
+
+    def object_options
+      @object.breadcrumby_options
     end
   end
 end
