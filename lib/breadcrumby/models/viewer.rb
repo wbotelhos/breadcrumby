@@ -33,9 +33,7 @@ module Breadcrumby
 
       I18n.t(label, scope: scope(object), default:
         I18n.t(label, scope: scope(object, include_model: false), default:
-          I18n.t(action, default: 'Edition')
-        )
-      )
+          I18n.t(action)))
     end
 
     def i18n_name(object)
