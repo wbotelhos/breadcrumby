@@ -15,7 +15,8 @@ RSpec.describe Breadcrumby::Viewer, '.link_options' do
     let!(:action) { nil }
 
     before do
-      allow(I18n).to receive(:t).with(:title, scope: [:breadcrumby, 'school'], name: :i18n_name, default: :i18n_name) { :title }
+      allow(I18n).to receive(:t).with(:title, scope: [:breadcrumby], default: :i18n_name) { 'title || name' }
+      allow(I18n).to receive(:t).with(:title, scope: [:breadcrumby, 'school'], name: :i18n_name, default: 'title || name') { 'school.title || title || name' }
     end
 
     it 'returns the link options' do
@@ -23,7 +24,7 @@ RSpec.describe Breadcrumby::Viewer, '.link_options' do
         itemprop:  :item,
         itemscope: true,
         itemtype:  'http://schema.org/Thing',
-        title:     :title
+        title:     'school.title || title || name'
       )
     end
   end
@@ -32,15 +33,16 @@ RSpec.describe Breadcrumby::Viewer, '.link_options' do
     let!(:action) { :edit }
 
     before do
-      allow(I18n).to receive(:t).with('actions.edit.title', scope: [:breadcrumby, 'school'], name: :i18n_name, default: :i18n_name) { 'actions.title' }
+      allow(I18n).to receive(:t).with('actions.edit.title', scope: [:breadcrumby], default: :i18n_name) { 'actions.edit.title || name' }
+      allow(I18n).to receive(:t).with('actions.edit.title', scope: [:breadcrumby, 'school'], name: :i18n_name, default: 'actions.edit.title || name') { 'school.actions.edit.title || actions.edit.title || name' }
     end
 
-    it 'returns the link options scoped by action' do
+    it 'returns the link options with title scoped by action fetched from i18n with root fallback' do
       expect(subject.link_options(object, action)).to eq(
         itemprop:  :item,
         itemscope: true,
         itemtype:  'http://schema.org/Thing',
-        title:     'actions.title'
+        title:     'school.actions.edit.title || actions.edit.title || name'
       )
     end
   end

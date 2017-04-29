@@ -69,7 +69,9 @@ module Breadcrumby
     def link_options(object, action)
       name       = i18n_name(object)
       title_path = action ? "actions.#{action}.title" : :title
-      title      = I18n.t(title_path, scope: scope(object), name: name, default: name)
+      title      = I18n.t(title_path, scope: scope(object), name: name, default:
+                    I18n.t(title_path, scope: scope(object, include_model: false), default:
+                      name))
 
       {
         itemprop:  :item,
