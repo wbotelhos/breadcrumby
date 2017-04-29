@@ -1,6 +1,7 @@
 # Breadcrumby
 
 [![Build Status](https://travis-ci.org/wbotelhos/breadcrumby.svg)](https://travis-ci.org/wbotelhos/breadcrumby)
+[![Gem Version](https://badge.fury.io/rb/breadcrumby.svg)](https://badge.fury.io/rb/breadcrumby)
 
 A solid Breadcrumb for Rails.
 You do not need to dirty your controllers with a bunch of code.
