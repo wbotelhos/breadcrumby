@@ -22,4 +22,14 @@ RSpec.describe Breadcrumby::Viewer, '.scope' do
       expect(subject.scope(object)).to eq %i[breadcrumby custom]
     end
   end
+
+  context 'when :include_model is false' do
+    before do
+      allow(object).to receive(:breadcrumby_options) { { i18n_key: :custom } }
+    end
+
+    it 'returns a i18n scope path with only root key' do
+      expect(subject.scope(object, include_model: false)).to eq %i[breadcrumby]
+    end
+  end
 end
