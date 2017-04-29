@@ -58,4 +58,32 @@ RSpec.describe Breadcrumby::Extension, '.breadcrumby_options' do
       end
     end
   end
+
+  describe ':actions' do
+    context 'when is not given' do
+      before do
+        stub_const 'Dummy', Class.new
+
+        Dummy.class_eval { include Breadcrumby::Extension }
+        Dummy.class_eval { breadcrumby }
+      end
+
+      it 'uses a default' do
+        expect(Dummy.new.breadcrumby_options[:actions]).to eq({})
+      end
+    end
+
+    context 'when is given' do
+      before do
+        stub_const 'Dummy', Class.new
+
+        Dummy.class_eval { include Breadcrumby::Extension }
+        Dummy.class_eval { breadcrumby actions: { key: :value } }
+      end
+
+      it 'uses the given one' do
+        expect(Dummy.new.breadcrumby_options[:actions]).to eq(key: :value)
+      end
+    end
+  end
 end

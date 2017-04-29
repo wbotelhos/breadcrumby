@@ -60,6 +60,7 @@ module Breadcrumby
     module ClassMethods
       def breadcrumby(options = {})
         @options = options.reverse_merge(
+          actions:     {},
           i18n_key:    name.underscore,
           method_name: :name
         )
