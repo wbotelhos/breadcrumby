@@ -24,8 +24,12 @@ module Breadcrumby
       @view.content_tag :ol, list, list_options
     end
 
-    def breadcrumbs
-      @breadcrumbs ||= @object.breadcrumby.append(Breadcrumby::Home.new(@view))
+    def breadcrumbs(crumbs: [])
+      items = @object.breadcrumby
+
+      items += [crumbs].flatten if crumbs.present?
+
+      @breadcrumbs ||= items.append(Breadcrumby::Home.new(@view))
     end
 
     def i18n_action_name(object, action)

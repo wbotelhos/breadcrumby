@@ -22,4 +22,16 @@ RSpec.describe Breadcrumby::Viewer, '.breadcrumbs' do
       Breadcrumby::Home.new(view)
     ]
   end
+
+  context 'when :crumbs is given' do
+    let!(:crumbs) { ['object'] }
+
+    it 'returns the objects including the given crumbs and home' do
+      expect(subject.breadcrumbs(crumbs: crumbs)).to eq [
+        object,
+        'object',
+        Breadcrumby::Home.new(view)
+      ]
+    end
+  end
 end
