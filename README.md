@@ -130,6 +130,30 @@ It generates a muted link on the end: `Home > School > Edition`
 
 You have the following actions: `edit` and `new`.
 
+### Custom Action Path
+
+For actions like `new` where the object will be a `new_record`, we can customize the candidate to represent the self object.
+This way we can build a minimum path, not just `Home > New`.
+Let's say you have `Unit` on session and wants to set it on breadcrumb to say you creating a `Course` on that unit of your school:
+
+
+```ruby
+class Course
+  breadcrumby actions: {
+    new: -> (view) { Unit.find(view.session[:current_school][:id])
+  }
+end
+```
+
+Now the `self` object will be the `new` call result and the output will be:
+
+```ruby
+Home > School > Unit > Courses > New
+```
+
+As you can see, the path will be completed from the `self` (new result) object.
+Plus, since the new thing is not `Unit` we need a context, so it will be the original model name on plural with value of `index_path` as path. Now you can navigate until the collection of items you want to create a new one.
+
 ## I18n
 
 You can customize some attributes via I18n to be fast and global:
