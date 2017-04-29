@@ -10,6 +10,6 @@ class School < ::ActiveRecord::Base
   def custom_method_name_nil; end
 
   def show_path
-    "#{self.class.name.underscore}.path"
+    "#{self.class.name.underscore}.show.path"
   end
 end

@@ -11,27 +11,20 @@ module Breadcrumby
     def breadcrumb
       return '' unless @object.respond_to?(:breadcrumby)
 
-      action = @options[:action]
-
       list = breadcrumbs(current_object).map.with_index do |object, index|
         item link(object) + meta(index + 1)
       end
 
-      if action.present?
-        list.unshift item(link(current_object, action: action) + meta(list.size + 1))
-      end
+      list += object_extra(list.size)
 
-      list = list.reverse.join('').html_safe
-
-      @view.content_tag :ol, list, list_options
+      @view.content_tag :ol, list.join('').html_safe, list_options
     end
 
-    def breadcrumbs(object, crumbs: [])
+    def breadcrumbs(object)
       items = object.breadcrumby
+      items << Breadcrumby::Home.new(@view)
 
-      items += [crumbs].flatten if crumbs.present?
-
-      @breadcrumbs ||= items.append(Breadcrumby::Home.new(@view))
+      items.reverse
     end
 
     def current_object
@@ -81,6 +74,9 @@ module Breadcrumby
     end
 
     def link_action(object, action)
+      return object.index_path if action == :index
+
+      # TODO: get current path to behaves like a refresh on the same page. @view.request.url?
       action ? 'javascript:void(0);' : object.show_path
     end
 
@@ -88,8 +84,7 @@ module Breadcrumby
       name       = i18n_name(object)
       title_path = action ? "actions.#{action}.title" : :title
       title      = I18n.t(title_path, scope: scope(object), name: name, default:
-                    I18n.t(title_path, scope: scope(object, include_model: false), default:
-                      name))
+                    I18n.t(title_path, scope: scope(object, include_model: false)))
 
       {
         itemprop:  :item,
@@ -119,6 +114,23 @@ module Breadcrumby
 
     def meta(index)
       @view.tag :meta, content: index, itemprop: :position
+    end
+
+    def object_extra(index)
+      action = @options[:action]
+      result = []
+
+      return result if action.blank?
+
+      if @object != current_object
+        index += 1
+
+        result << item(link(@object, action: :index) + meta(index))
+      end
+
+      result << item(link(current_object, action: action) + meta(index + 1))
+
+      result
     end
 
     def scope(object, include_model: true)

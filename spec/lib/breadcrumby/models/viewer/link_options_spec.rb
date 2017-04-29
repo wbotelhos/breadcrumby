@@ -15,8 +15,8 @@ RSpec.describe Breadcrumby::Viewer, '.link_options' do
     let!(:action) { nil }
 
     before do
-      allow(I18n).to receive(:t).with(:title, scope: [:breadcrumby], default: :i18n_name) { 'title || name' }
-      allow(I18n).to receive(:t).with(:title, scope: [:breadcrumby, 'school'], name: :i18n_name, default: 'title || name') { 'school.title || title || name' }
+      allow(I18n).to receive(:t).with(:title, scope: [:breadcrumby, 'school'], name: :i18n_name, default: 'title') { 'breadcrumby.school.title' }
+      allow(I18n).to receive(:t).with(:title, scope: [:breadcrumby]) { 'title' }
     end
 
     it 'returns the link options' do
@@ -24,7 +24,7 @@ RSpec.describe Breadcrumby::Viewer, '.link_options' do
         itemprop:  :item,
         itemscope: true,
         itemtype:  'http://schema.org/Thing',
-        title:     'school.title || title || name'
+        title:     'breadcrumby.school.title'
       )
     end
   end
@@ -33,8 +33,8 @@ RSpec.describe Breadcrumby::Viewer, '.link_options' do
     let!(:action) { :edit }
 
     before do
-      allow(I18n).to receive(:t).with('actions.edit.title', scope: [:breadcrumby], default: :i18n_name) { 'actions.edit.title || name' }
-      allow(I18n).to receive(:t).with('actions.edit.title', scope: [:breadcrumby, 'school'], name: :i18n_name, default: 'actions.edit.title || name') { 'school.actions.edit.title || actions.edit.title || name' }
+      allow(I18n).to receive(:t).with('actions.edit.title', scope: [:breadcrumby, 'school'], name: :i18n_name, default: 'breadcrumby.actions.edit.title') { 'breadcrumby.school.actions.edit.title' }
+      allow(I18n).to receive(:t).with('actions.edit.title', scope: [:breadcrumby]) { 'breadcrumby.actions.edit.title' }
     end
 
     it 'returns the link options with title scoped by action fetched from i18n with root fallback' do
@@ -42,7 +42,7 @@ RSpec.describe Breadcrumby::Viewer, '.link_options' do
         itemprop:  :item,
         itemscope: true,
         itemtype:  'http://schema.org/Thing',
-        title:     'school.actions.edit.title || actions.edit.title || name'
+        title:     'breadcrumby.school.actions.edit.title'
       )
     end
   end

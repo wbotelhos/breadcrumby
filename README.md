@@ -76,7 +76,7 @@ With a instance of Course that has a relation with School, we can build the brea
 <%= breadcrumby @course %>
 ```
 
-And the result will be: `Home > School > Course`
+And the result will be: `Home / School / Course`
 
 ## HTML
 
@@ -114,7 +114,7 @@ class School
 end
 ```
 
-It generates a muted link on the end: `Home > School > Edition`
+It generates a muted link on the end: `Home / School / Edition`
 
 ```ruby
 <ol class="breadcrumby" itemscope itemtype="http://schema.org/BreadcrumbList">
@@ -128,14 +128,14 @@ It generates a muted link on the end: `Home > School > Edition`
 </ol>
 ```
 
-You have the following actions: `edit` and `new`.
+All actions without `actions` option will try to follow `path` options.
+If it is a new object, it will have no relation and will raise error.
 
 ### Custom Action Path
 
 For actions like `new` where the object will be a `new_record`, we can customize the candidate to represent the self object.
-This way we can build a minimum path, not just `Home > New`.
-Let's say you have `Unit` on session and wants to set it on breadcrumb to say you creating a `Course` on that unit of your school:
-
+This way we can build a minimum path, not just `Home / New`.
+Let's say you have `Unit` on session and wants to set it on breadcrumb to say you are creating a `Course` on that unit of your school:
 
 ```ruby
 class Course
@@ -148,11 +148,19 @@ end
 Now the `self` object will be the `new` call result and the output will be:
 
 ```ruby
-Home > School > Unit > Courses > New
+Home / School / Unit / Courses / New
 ```
 
 As you can see, the path will be completed from the `self` (new result) object.
-Plus, since the new thing is not `Unit` we need a context, so it will be the original model name on plural with value of `index_path` as path. Now you can navigate until the collection of items you want to create a new one.
+Plus, since the new object is not `Unit`, we need a context. It will be related with original model with value of `index_path` as path:
+
+```ruby
+<a itemprop="item" itemscope="itemscope" itemtype="http://schema.org/Thing" title="List Courses" href="/courses">
+  <span itemprop="name">Turmas</span>
+</a>
+```
+
+Now it is possible to navigate to collection of items you want to create a new one.
 
 ## I18n
 
@@ -170,14 +178,14 @@ en-US:
       title: "School: %{name}"
 
       actions:
-        edit:
+        edit: # new / index / method_name ...
           name: Edition
           title: "Editing: %{name}"
 ```
 
+- `actions`: Properties to change the actions crumb;
 - `name`: The name of the crumb item;
-- `title`: The title of the crum item with possibility of to use the name `%{name}`;
-- `action`: Properties to change the actions crumb.
+- `title`: The title of the crum item with possibility of to use the name `%{name}`.
 
 You can change the model key name, since the default search is the class method name:
 
@@ -196,7 +204,7 @@ en-US:
       name: School
 ```
 
-To make actions generic for all models, you can set it on the root:
+To make translations more generic just take it of inside the model name and it will be used for all models:
 
 ```yaml
 en-US:
@@ -205,3 +213,7 @@ en-US:
       edit:
         name: Edition
 ```
+
+## Love it!
+
+Via [PayPal](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=X8HEP2878NDEG&item_name=breadcrumby) or [Gittip](http://www.gittip.com/wbotelhos). Thanks! (:

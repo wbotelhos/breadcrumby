@@ -16,7 +16,7 @@ RSpec.describe Breadcrumby::Viewer, '.link' do
     end
 
     it 'build a link with object properties' do
-      expect(subject.link(object)).to have_tag(:a, with: { href: 'school.path' }) do
+      expect(subject.link(object)).to have_tag(:a, with: { href: 'school.show.path' }) do
         with_tag(:span, with: { itemprop: 'name' }) do
           with_text 'i18n_name'
         end
@@ -30,7 +30,7 @@ RSpec.describe Breadcrumby::Viewer, '.link' do
     end
 
     it 'build a link with object and action properties' do
-      expect(subject.link(object, action: action)).to have_tag(:a, with: { itemprop: 'item', itemscope: 'itemscope', itemtype: 'http://schema.org/Thing', title: object.name, href: 'javascript:void(0);' }) do
+      expect(subject.link(object, action: action)).to have_tag(:a, with: { itemprop: 'item', itemscope: 'itemscope', itemtype: 'http://schema.org/Thing', title: 'translation missing: en.breadcrumby.actions.edit.title', href: 'javascript:void(0);' }) do
         with_tag(:span, with: { itemprop: 'name' }) do
           with_text 'i18n_action_name'
         end
