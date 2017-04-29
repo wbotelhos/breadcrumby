@@ -11,11 +11,13 @@ module Breadcrumby
     def breadcrumb
       return '' unless @object.respond_to?(:breadcrumby)
 
+      action = @options[:action]
+
       list = breadcrumbs.map.with_index do |object, index|
         item link(object) + meta(index + 1)
       end
 
-      if (action = @options[:action]).present?
+      if action.present?
         list.unshift item(link(@object, action: action) + meta(list.size + 1))
       end
 
