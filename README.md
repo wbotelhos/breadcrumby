@@ -9,11 +9,7 @@ Breadcrumby is a really relational breadcrumb.
 
 ## Install
 
-```bash
-gem install breadcrumby
-```
-
-Or add the following code on your `Gemfile`:
+Add the following code on your `Gemfile` and run `bundle install`:
 
 ```ruby
 gem 'breadcrumby'
