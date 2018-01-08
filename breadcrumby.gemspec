@@ -22,15 +22,12 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'activerecord', '~> 5'
   spec.add_dependency 'railties', '~> 5'
 
-  spec.add_development_dependency 'bundler'
   spec.add_development_dependency 'database_cleaner'
   spec.add_development_dependency 'factory_girl_rails'
   spec.add_development_dependency 'guard-rspec'
   spec.add_development_dependency 'rspec-html-matchers'
   spec.add_development_dependency 'rspec-rails'
-  spec.add_development_dependency 'rspec'
   spec.add_development_dependency 'rubocop-rspec'
-  spec.add_development_dependency 'rubocop'
   spec.add_development_dependency 'sqlite3'
   spec.add_development_dependency 'pry-byebug'
 end
